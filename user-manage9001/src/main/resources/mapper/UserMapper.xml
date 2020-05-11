@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="top.kissvs.dataview.dao.UserDao">
+
+    <insert id="save" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into t_userinfo(
+        username,password,user_email,user_addr,user_phone,create_date
+        )  values(
+        #{userName},#{passWord},#{userEmail},#{userAddr},#{userPhone},#{createDate}
+        );
+    </insert>
+
+
+    <resultMap id="BaseResultMap" type="top.kissvs.dataview.entities.UserInfo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <id column="username" property="userName" jdbcType="VARCHAR"/>
+        <id column="password" property="passWord" jdbcType="VARCHAR"/>
+        <id column="user_email" property="userEmail" jdbcType="VARCHAR"/>
+        <id column="user_addr" property="userAddr" jdbcType="VARCHAR"/>
+        <id column="user_phone" property="userPhone" jdbcType="VARCHAR"/>
+        <id column="user_se" property="userSe" jdbcType="VARCHAR"/>
+
+        <id column="is_delete" property="isDelete" jdbcType="INTEGER"/>
+        <id column="create_date" property="createDate" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="login" parameterType="UserInfo" resultMap="BaseResultMap">
+        select * from t_userinfo where username = #{userName} and password = #{passWord};
+    </select>
+
+    <select id="isReg" parameterType="String" resultMap="BaseResultMap">
+        select * from t_userinfo where username = #{userName};
+    </select>
+
+    <select id="getUserInfoById" parameterType="Long" resultMap="BaseResultMap">
+        select * from t_userinfo where id = #{id};
+    </select>
+
+    <!--<select id="isReg" parameterType="String" resultMap="BaseResultMap">
+        select * from t_userinfo where username = #{userName};
+    </select>-->
+
+    <update id="alterPassword" parameterType="UserInfo" >
+        update t_userinfo a set a.password = #{passWord} where a.username = #{userName} ;
+    </update>
+
+
+    <update id="deleteUser" parameterType="UserInfo" >
+        update t_userinfo a set a.is_delete = #{isDelete} where a.username = #{userName} ;
+    </update>
+
+</mapper>
+
+

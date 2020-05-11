@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="top.kissvs.dataview.dao.DeviceDao">
+
+    <insert id="addDevice" parameterType="DeviceInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_deviceinfo(
+        device_name,device_addr,class_id,create_date
+        )  values(
+        #{deviceName},#{deviceAddr},#{classId},#{createDate}
+        );
+    </insert>
+
+
+    <resultMap id="BaseResultMap" type="top.kissvs.dataview.entities.DeviceInfo">
+
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <id column="device_name" property="deviceName" jdbcType="VARCHAR"/>
+        <id column="device_addr" property="deviceAddr" jdbcType="VARCHAR"/>
+        <id column="class_id" property="classId" jdbcType="BIGINT"/>
+        <id column="device_gpsX" property="deviceGpsX" jdbcType="INTEGER"/>
+        <id column="device_gpsY" property="deviceGpsY" jdbcType="INTEGER"/>
+
+        <id column="is_delete" property="isDelete" jdbcType="INTEGER"/>
+        <id column="create_date" property="createDate" jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <!--<select id="login" parameterType="UserInfo" resultMap="BaseResultMap">
+        select * from t_userinfo where username = #{userName} and password = #{passWord};
+    </select>-->
+
+    <select id="selectDevice" parameterType="String" resultMap="BaseResultMap">
+        select * from t_deviceinfo where device_name = #{deviceName};
+    </select>
+
+    <!--<select id="isReg" parameterType="String" resultMap="BaseResultMap">
+        select * from t_userinfo where username = #{userName};
+    </select>-->
+
+    <!--<update id="alterPassword" parameterType="UserInfo" >
+        update t_userinfo a set a.password = #{passWord} where a.username = #{userName} ;
+    </update>
+
+
+    <update id="deleteUser" parameterType="UserInfo" >
+        update t_userinfo a set a.is_delete = #{isDelete} where a.username = #{userName} ;
+    </update>-->
+
+</mapper>
+
+

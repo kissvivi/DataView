@@ -1,0 +1,68 @@
+server:
+  port: 7066
+
+spring:
+  application:
+    name: cloud-gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true #开启从注册中心动态创建路由的功能，利用微服务名进行路由
+      routes:
+        - id: user_routh #payment_route    #路由的ID，没有固定规则但要求唯一，建议配合服务名
+          uri: http://127.0.0.1:9001        #匹配后提供服务的路由地址
+          #uri: http://user-consumer-service/ #匹配后提供服务的路由地址
+          predicates:
+            - Path=/user/**         # 断言，路径相匹配的进行路由
+
+            #- id: payment_routh2 #payment_route    #路由的ID，没有固定规则但要求唯一，建议配合服务名
+          #uri: http://localhost:8001          #匹配后提供服务的路由地址
+          #uri: lb://cloud-payment-service #匹配后提供服务的路由地址
+          #predicates:
+          # - Path=/payment/lb/**         # 断言，路径相匹配的进行路由
+            #- After=2020-02-21T15:51:37.485+08:00[Asia/Shanghai]
+            #- Cookie=username,zzyy
+            #- Header=X-Request-Id, \d+  # 请求头要有X-Request-Id属性并且值为整数的正则表达式
+#      globalcors:
+#        cors-configurations:
+#          '[/**]':
+#            # 允许携带认证信息
+#            # 允许跨域的源(网站域名/ip)，设置*为全部
+#            # 允许跨域请求里的head字段，设置*为全部
+#            # 允许跨域的method， 默认为GET和OPTIONS，设置*为全部
+#            # 跨域允许的有效期
+#            allow-credentials: true
+#            allowed-origins: "*"
+#              #- "http://localhost:13009"
+#              #- "http://localhost:13010"
+#            allowed-headers: "*"
+#            allowed-methods:
+#              - OPTIONS
+#              - GET
+#              - POST
+#            max-age: 3600
+            # 允许response的head信息
+            # 默认仅允许如下6个：
+            #     Cache-Control
+            #     Content-Language
+            #     Content-Type
+            #     Expires
+            #     Last-Modified
+            #     Pragma
+            #exposed-headers:
+
+eureka:
+  instance:
+    hostname: cloud-gateway-service
+    prefer-ip-address: true
+  client: #服务提供者provider注册进eureka服务列表内
+    service-url:
+      register-with-eureka: true
+      fetch-registry: true
+      defaultZone: http://127.0.0.1:7001/eureka
+
+# 配置Gateway日志等级，输出转发细节信息
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
